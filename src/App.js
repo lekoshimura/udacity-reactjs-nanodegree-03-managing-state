@@ -17,6 +17,34 @@ class App extends Component {
     numCorrect: 0
   };
 
+  incNumCorrect() {
+    this.setState((currentState) => ({
+      numCorrect: currentState.numCorrect + 1
+    }))
+  };
+
+  incNumQuestions() {
+    this.setState((currentState) => ({
+      numQuestions: currentState.numQuestions + 1
+    }));
+  };
+
+  randomizeValues() {
+    this.setState((currentValue) => ({
+      value1: Math.floor(Math.random() * 100),
+      value2: Math.floor(Math.random() * 100),
+      value3: Math.floor(Math.random() * 100)
+    }));
+  };
+
+  checkSum(userGuess) {
+    const isProposedAnswerCorrect = this.state.proposedAnswer === this.state.value1 + this.state.value2 + this.state.value3;
+    const isUserGuessCorrect = isProposedAnswerCorrect === userGuess;
+    if (isUserGuessCorrect) this.incNumCorrect();
+    this.incNumQuestions();
+    this.randomizeValues();
+  };
+
   render() {
     return (
       <div className="App">
@@ -29,8 +57,8 @@ class App extends Component {
           <div className="equation">
             <p className="text">{`${this.state.value1} + ${this.state.value2} + ${this.state.value3} = ${this.state.proposedAnswer}`}</p>
           </div>
-          <button>True</button>
-          <button>False</button>
+          <button onClick={() => this.checkSum(true)}>True</button>
+          <button onClick={() => this.checkSum(false)}>False</button>
           <p className="text">
             Your Score: {this.state.numCorrect}/{this.state.numQuestions}
           </p>
